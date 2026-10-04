@@ -88,6 +88,14 @@ export default function Home() {
         isLargeText ? "text-lg" : "text-base"
       } transition-all duration-200 antialiased selection:bg-blue-100 selection:text-blue-900`}
     >
+      {/* Tautan untuk melompati navigasi bagi pengguna keyboard */}
+      <a
+        href="#konten"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-3 focus:bg-blue-700 focus:text-white focus:rounded-lg focus:m-2"
+      >
+        Lewati ke konten utama
+      </a>
+
       {/* 
         MAIN PAGE STRUCTURE: CSS GRID 12-COLUMN LAYOUT
         - Header: lg:col-span-12
@@ -97,7 +105,7 @@ export default function Home() {
       */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* =========================================================================
-            HEADER (col-span-12)
+            HEADER (col-span-12 / Landmark: banner)
         ========================================================================= */}
         <header className="col-span-1 lg:col-span-12 bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
           {/* Top Bar / Accessibility & Hotline banner (Flexbox) */}
@@ -125,6 +133,7 @@ export default function Home() {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -142,6 +151,7 @@ export default function Home() {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -156,8 +166,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Main Navigation Bar */}
-          <div className="px-4 sm:px-8 py-4 sm:py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Main Navigation Bar (Landmark: navigation) */}
+          <nav
+            aria-label="Navigasi utama"
+            className="px-4 sm:px-8 py-4 sm:py-5 flex flex-col md:flex-row items-center justify-between gap-4"
+          >
             <div className="flex items-center justify-start gap-3.5">
               <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 shadow-xs">
                 <svg
@@ -165,6 +178,7 @@ export default function Home() {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -176,9 +190,9 @@ export default function Home() {
               </div>
               <div>
                 <div className="flex items-center justify-start gap-2">
-                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+                  <span className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
                     Layanan Surat &amp; Akta Kematian
-                  </h1>
+                  </span>
                   <span className="inline-flex items-center justify-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
                     Online
                   </span>
@@ -189,65 +203,78 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-end gap-3 w-full md:w-auto">
-              <a
-                href="#prosedur"
-                className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg text-slate-700 hover:text-blue-700 hover:bg-slate-100 font-medium text-sm transition-colors"
-              >
-                Prosedur
-              </a>
-              <a
-                href="#persyaratan"
-                className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg text-slate-700 hover:text-blue-700 hover:bg-slate-100 font-medium text-sm transition-colors"
-              >
-                Syarat Berkas
-              </a>
-              <a
-                href="#lacak"
-                className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium text-sm transition-colors"
-              >
-                Lacak Status
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsSubmitted(false);
-                  setFormStep(1);
-                  setIsModalOpen(true);
-                }}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-all duration-150 cursor-pointer active:scale-95"
-              >
-                <svg
-                  className="w-4 h-4 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            <ul className="flex flex-wrap items-center justify-end gap-3 w-full md:w-auto list-none m-0 p-0">
+              <li>
+                <a
+                  href="#prosedur"
+                  className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg text-slate-700 hover:text-blue-700 hover:bg-slate-100 font-medium text-sm transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Ajukan Surat Kematian
-              </button>
-            </div>
-          </div>
+                  Prosedur
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#persyaratan"
+                  className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg text-slate-700 hover:text-blue-700 hover:bg-slate-100 font-medium text-sm transition-colors"
+                >
+                  Syarat Berkas
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#lacak"
+                  className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium text-sm transition-colors"
+                >
+                  Lacak Status
+                </a>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSubmitted(false);
+                    setFormStep(1);
+                    setIsModalOpen(true);
+                  }}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-all duration-150 cursor-pointer active:scale-95"
+                >
+                  <svg
+                    className="w-4 h-4 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  Ajukan Surat Kematian
+                </button>
+              </li>
+            </ul>
+          </nav>
         </header>
 
         {/* =========================================================================
-            MAIN CONTENT AREA (col-span-8)
+            MAIN CONTENT AREA (col-span-8 / Landmark: main)
         ========================================================================= */}
-        <main className="col-span-1 lg:col-span-8 space-y-8">
+        <main id="konten" className="col-span-1 lg:col-span-8 space-y-8">
           {/* Empathetic Hero Banner */}
-          <section className="bg-gradient-to-br from-blue-50/90 via-white to-slate-100/70 rounded-2xl p-6 sm:p-8 border border-blue-100/80 shadow-xs relative overflow-hidden">
+          <section
+            aria-labelledby="judul-utama"
+            className="bg-gradient-to-br from-blue-50/90 via-white to-slate-100/70 rounded-2xl p-6 sm:p-8 border border-blue-100/80 shadow-xs relative overflow-hidden"
+          >
             <div className="max-w-2xl">
               <div className="inline-flex items-center justify-start gap-2 bg-blue-100 text-blue-900 px-3 py-1 rounded-full text-xs sm:text-sm font-medium mb-4">
                 <svg
                   className="w-4 h-4 text-blue-700"
                   fill="currentColor"
                   viewBox="0 0 20 20"
+                  aria-hidden="true"
                 >
                   <path
                     fillRule="evenodd"
@@ -258,9 +285,9 @@ export default function Home() {
                 Turut Berduka Cita Atas Kehilangan Keluarga Tercinta
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
+              <h1 id="judul-utama" className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
                 Kami Siap Mendampingi Anda Menyelesaikan Administrasi Kependudukan
-              </h2>
+              </h1>
 
               <p className="mt-3 text-slate-600 leading-relaxed text-sm sm:text-base">
                 Dalam suasana duka, keluarga tidak perlu merasa terbebani oleh urusan
@@ -285,6 +312,7 @@ export default function Home() {
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -310,6 +338,7 @@ export default function Home() {
                     className="w-4 h-4 text-emerald-600"
                     fill="currentColor"
                     viewBox="0 0 20 20"
+                    aria-hidden="true"
                   >
                     <path
                       fillRule="evenodd"
@@ -324,6 +353,7 @@ export default function Home() {
                     className="w-4 h-4 text-emerald-600"
                     fill="currentColor"
                     viewBox="0 0 20 20"
+                    aria-hidden="true"
                   >
                     <path
                       fillRule="evenodd"
@@ -338,6 +368,7 @@ export default function Home() {
                     className="w-4 h-4 text-emerald-600"
                     fill="currentColor"
                     viewBox="0 0 20 20"
+                    aria-hidden="true"
                   >
                     <path
                       fillRule="evenodd"
@@ -351,13 +382,13 @@ export default function Home() {
             </div>
           </section>
 
-          {/* SECTION 1: LAYANAN UTAMA & KEUNGGULAN */}
-          <section className="space-y-4">
+          {/* SECTION 1: LAYANAN UTAMA & KEUNGGULAN (Landmark: region) */}
+          <section aria-labelledby="judul-keunggulan" className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                <h2 id="judul-keunggulan" className="text-lg sm:text-xl font-bold text-slate-900">
                   Kemudahan Layanan yang Kami Sediakan
-                </h3>
+                </h2>
                 <p className="text-xs sm:text-sm text-slate-500">
                   Didesain untuk mengutamakan ketenangan dan kemudahan sanak keluarga.
                 </p>
@@ -368,14 +399,14 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+              <article className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-base">Pelayanan 100% Gratis</h4>
+                  <h3 className="font-semibold text-slate-900 text-base">Pelayanan 100% Gratis</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                     Seluruh proses administrasi penerbitan akta kematian tidak dipungut biaya retribusi apapun.
                   </p>
@@ -383,16 +414,16 @@ export default function Home() {
                 <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-start text-xs font-semibold text-emerald-700">
                   Bebas Pungutan Liar
                 </div>
-              </div>
+              </article>
 
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+              <article className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center mb-3">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-base">Penerbitan 1x24 Jam</h4>
+                  <h3 className="font-semibold text-slate-900 text-base">Penerbitan 1x24 Jam</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                     Setelah berkas dinyatakan lengkap oleh petugas, akta resmi akan langsung diterbitkan secara elektronik.
                   </p>
@@ -400,16 +431,16 @@ export default function Home() {
                 <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-start text-xs font-semibold text-blue-700">
                   Notifikasi WhatsApp Otomatis
                 </div>
-              </div>
+              </article>
 
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+              <article className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center mb-3">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-base">Layanan Jemput Bola</h4>
+                  <h3 className="font-semibold text-slate-900 text-base">Layanan Jemput Bola</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                     Bagi pemohon lanjut usia atau yang tidak memiliki gawai, petugas kelurahan siap mendampingi langsung ke rumah.
                   </p>
@@ -417,17 +448,17 @@ export default function Home() {
                 <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-start text-xs font-semibold text-slate-700">
                   Ramah Lansia &amp; Disabilitas
                 </div>
-              </div>
+              </article>
             </div>
           </section>
 
-          {/* SECTION 2: PROSEDUR & ALUR PENGURUSAN */}
-          <section id="prosedur" className="space-y-4">
+          {/* SECTION 2: PROSEDUR & ALUR PENGURUSAN (Landmark: region) */}
+          <section id="prosedur" aria-labelledby="judul-prosedur" className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                <h2 id="judul-prosedur" className="text-lg sm:text-xl font-bold text-slate-900">
                   Alur &amp; Prosedur Pengurusan
-                </h3>
+                </h2>
                 <p className="text-xs sm:text-sm text-slate-500">
                   Langkah sederhana dari pelaporan hingga terbitnya dokumen kependudukan baru.
                 </p>
@@ -438,105 +469,105 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+              <article className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-sm">1</span>
                     <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded">Tahap Awal</span>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-sm sm:text-base">Surat Keterangan Kematian</h4>
+                  <h3 className="font-semibold text-slate-900 text-sm sm:text-base">Surat Keterangan Kematian</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                     Dapatkan surat keterangan kematian dari dokter/RS atau pengantar RT/RW &amp; Kelurahan.
                   </p>
                 </div>
                 <div className="mt-4 pt-2 text-xs text-blue-700 font-medium">Berkas Sumber Medis / Kelurahan</div>
-              </div>
+              </article>
 
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+              <article className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-sm">2</span>
                     <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded">Persiapan</span>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-sm sm:text-base">Siapkan &amp; Foto Berkas</h4>
+                  <h3 className="font-semibold text-slate-900 text-sm sm:text-base">Siapkan &amp; Foto Berkas</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                     Foto dokumen asli dengan ponsel: KTP almarhum, KK, KTP pelapor, dan KTP 2 saksi.
                   </p>
                 </div>
                 <div className="mt-4 pt-2 text-xs text-blue-700 font-medium">Format Foto HP (JPG / PNG / PDF)</div>
-              </div>
+              </article>
 
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+              <article className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-sm">3</span>
                     <span className="text-xs font-medium text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Online</span>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-sm sm:text-base">Isi Formulir Singkat</h4>
+                  <h3 className="font-semibold text-slate-900 text-sm sm:text-base">Isi Formulir Singkat</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                     Klik tombol &quot;Ajukan Surat Kematian&quot;. Masukkan data pokok pemohon dan almarhum.
                   </p>
                 </div>
                 <div className="mt-4 pt-2 text-xs text-blue-700 font-medium">Selesai dalam 5 Menit</div>
-              </div>
+              </article>
 
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+              <article className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-700 text-white font-bold text-sm">4</span>
                     <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded">Verifikasi</span>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-sm sm:text-base">Validasi oleh Petugas</h4>
+                  <h3 className="font-semibold text-slate-900 text-sm sm:text-base">Validasi oleh Petugas</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                     Petugas Disdukcapil memverifikasi kecocokan NIK di database nasional.
                   </p>
                 </div>
                 <div className="mt-4 pt-2 text-xs text-blue-700 font-medium">Pemberitahuan SMS &amp; WhatsApp</div>
-              </div>
+              </article>
 
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+              <article className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-700 text-white font-bold text-sm">5</span>
                     <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded">Penerbitan</span>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-sm sm:text-base">Penerbitan Akta TTE Resmi</h4>
+                  <h3 className="font-semibold text-slate-900 text-sm sm:text-base">Penerbitan Akta TTE Resmi</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                     Kutipan Akta Kematian resmi diterbitkan dengan Tanda Tangan Elektronik.
                   </p>
                 </div>
                 <div className="mt-4 pt-2 text-xs text-blue-700 font-medium">Bisa Dicetak di Kertas HVS A4</div>
-              </div>
+              </article>
 
-              <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+              <article className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-sm">6</span>
                     <span className="text-xs font-medium text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Paket 3-in-1</span>
                   </div>
-                  <h4 className="font-semibold text-slate-900 text-sm sm:text-base">Kartu Keluarga Baru Terbit</h4>
+                  <h3 className="font-semibold text-slate-900 text-sm sm:text-base">Kartu Keluarga Baru Terbit</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                     Secara otomatis KK keluarga diperbarui tanpa perlu permohonan terpisah.
                   </p>
                 </div>
                 <div className="mt-4 pt-2 text-xs text-emerald-700 font-medium">Paket Dokumen Lengkap Langsung</div>
-              </div>
+              </article>
             </div>
           </section>
 
-          {/* SECTION 3: DOKUMEN PERSYARATAN */}
-          <section id="persyaratan" className="space-y-4">
+          {/* SECTION 3: DOKUMEN PERSYARATAN (Landmark: region) */}
+          <section id="persyaratan" aria-labelledby="judul-persyaratan" className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                <h2 id="judul-persyaratan" className="text-lg sm:text-xl font-bold text-slate-900">
                   Dokumen Persyaratan yang Diperlukan
-                </h3>
+                </h2>
                 <p className="text-xs sm:text-sm text-slate-500">
                   Periksa kelengkapan dokumen di bawah ini. Cukup lampirkan foto yang terbaca jelas.
                 </p>
               </div>
               <div className="flex items-center justify-start gap-1 text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full self-start sm:self-auto">
-                <svg className="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <span>Klik kotak centang untuk membantu mengingat berkas</span>
@@ -556,9 +587,9 @@ export default function Home() {
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-xs font-semibold text-blue-800 bg-blue-100 px-2 py-0.5 rounded">Wajib Utama</span>
-                    <input type="checkbox" checked={!!checkedDocs[1]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" />
+                    <input type="checkbox" checked={!!checkedDocs[1]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" aria-label="Centang Surat Keterangan Kematian" />
                   </div>
-                  <h4 className="font-semibold text-slate-900 mt-2.5 text-base">Surat Keterangan Kematian</h4>
+                  <h3 className="font-semibold text-slate-900 mt-2.5 text-base">Surat Keterangan Kematian</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                     Asli dari Dokter / Puskesmas / Rumah Sakit, ATAU Surat Pengantar Kematian dari Kepala Desa / Lurah.
                   </p>
@@ -581,9 +612,9 @@ export default function Home() {
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-xs font-semibold text-blue-800 bg-blue-100 px-2 py-0.5 rounded">Wajib Utama</span>
-                    <input type="checkbox" checked={!!checkedDocs[2]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" />
+                    <input type="checkbox" checked={!!checkedDocs[2]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" aria-label="Centang Kartu Keluarga Asli" />
                   </div>
-                  <h4 className="font-semibold text-slate-900 mt-2.5 text-base">Kartu Keluarga (KK) Asli</h4>
+                  <h3 className="font-semibold text-slate-900 mt-2.5 text-base">Kartu Keluarga (KK) Asli</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                     Kartu Keluarga tempat almarhum/almarhumah terdaftar. Akan diperbarui otomatis dengan susunan baru.
                   </p>
@@ -606,9 +637,9 @@ export default function Home() {
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">Identitas</span>
-                    <input type="checkbox" checked={!!checkedDocs[3]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" />
+                    <input type="checkbox" checked={!!checkedDocs[3]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" aria-label="Centang KTP Almarhum" />
                   </div>
-                  <h4 className="font-semibold text-slate-900 mt-2.5 text-base">KTP-el Almarhum/Almarhumah</h4>
+                  <h3 className="font-semibold text-slate-900 mt-2.5 text-base">KTP-el Almarhum/Almarhumah</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                     KTP elektronik asli. Jika hilang/rusak, dapat diganti dengan surat pernyataan kehilangan dari keluarga.
                   </p>
@@ -631,9 +662,9 @@ export default function Home() {
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">Pemohon</span>
-                    <input type="checkbox" checked={!!checkedDocs[4]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" />
+                    <input type="checkbox" checked={!!checkedDocs[4]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" aria-label="Centang KTP Pelapor" />
                   </div>
-                  <h4 className="font-semibold text-slate-900 mt-2.5 text-base">KTP-el Pelapor / Ahli Waris</h4>
+                  <h3 className="font-semibold text-slate-900 mt-2.5 text-base">KTP-el Pelapor / Ahli Waris</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                     Identitas KTP pelapor (suami/istri, anak kandung, orang tua, atau keluarga terdekat yang mengurus).
                   </p>
@@ -656,9 +687,9 @@ export default function Home() {
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">Saksi</span>
-                    <input type="checkbox" checked={!!checkedDocs[5]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" />
+                    <input type="checkbox" checked={!!checkedDocs[5]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" aria-label="Centang KTP 2 Saksi" />
                   </div>
-                  <h4 className="font-semibold text-slate-900 mt-2.5 text-base">KTP-el 2 Orang Saksi</h4>
+                  <h3 className="font-semibold text-slate-900 mt-2.5 text-base">KTP-el 2 Orang Saksi</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                     Foto identitas KTP 2 orang saksi yang mengetahui peristiwa kematian (kerabat, tetangga, atau RT/RW).
                   </p>
@@ -681,9 +712,9 @@ export default function Home() {
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <span className="text-xs font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded">Khusus Status Kawin</span>
-                    <input type="checkbox" checked={!!checkedDocs[6]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" />
+                    <input type="checkbox" checked={!!checkedDocs[6]} onChange={() => {}} className="w-4 h-4 text-blue-600 rounded border-slate-300 cursor-pointer" aria-label="Centang Buku Nikah" />
                   </div>
-                  <h4 className="font-semibold text-slate-900 mt-2.5 text-base">Buku Nikah / Akta Perkawinan</h4>
+                  <h3 className="font-semibold text-slate-900 mt-2.5 text-base">Buku Nikah / Akta Perkawinan</h3>
                   <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
                     Wajib dilampirkan jika almarhum masih berstatus kawin, untuk pembaruan status pasangan hidup.
                   </p>
@@ -703,9 +734,9 @@ export default function Home() {
                 <span className="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-800 text-blue-200">
                   Pengajuan Mandiri Cepat
                 </span>
-                <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
                   Sudah Siap Melakukan Permohonan Online?
-                </h3>
+                </h2>
                 <p className="text-blue-100 text-xs sm:text-sm max-w-xl leading-relaxed">
                   Tidak perlu khawatir jika ada dokumen yang belum lengkap, Anda dapat mengisi data pokok terlebih dahulu.
                 </p>
@@ -721,7 +752,7 @@ export default function Home() {
                   }}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white text-blue-900 hover:bg-blue-50 font-bold text-sm sm:text-base shadow-sm transition-all cursor-pointer"
                 >
-                  <svg className="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                   Buka Formulir Pengajuan
@@ -733,18 +764,19 @@ export default function Home() {
           {/* Guidance for Elderly Users Accordion / Tips */}
           <section
             id="panduan-lansia"
+            aria-labelledby="judul-lansia"
             className="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-xs space-y-4"
           >
             <div className="flex items-center justify-start gap-3">
               <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-900">
+                <h2 id="judul-lansia" className="text-lg font-bold text-slate-900">
                   Panduan Kemudahan untuk Lansia &amp; Pendamping
-                </h3>
+                </h2>
                 <p className="text-xs sm:text-sm text-slate-500">
                   Pertanyaan umum dan tips bila Anda kesulitan menggunakan gawai.
                 </p>
@@ -753,17 +785,17 @@ export default function Home() {
 
             <div className="divide-y divide-slate-100 text-sm">
               <div className="py-3">
-                <h4 className="font-semibold text-slate-900 text-sm sm:text-base">
+                <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
                   Apakah lansia wajib datang sendiri ke kantor Disdukcapil?
-                </h4>
+                </h3>
                 <p className="text-slate-600 mt-1 leading-relaxed text-xs sm:text-sm">
                   <strong>Tidak perlu.</strong> Pengurusan dapat diwakilkan sepenuhnya oleh keluarga atau memanfaatkan <strong>Layanan Jemput Berkas</strong>.
                 </p>
               </div>
               <div className="py-3">
-                <h4 className="font-semibold text-slate-900 text-sm sm:text-base">
+                <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
                   Bagaimana jika wafat di rumah tanpa surat dokter?
-                </h4>
+                </h3>
                 <p className="text-slate-600 mt-1 leading-relaxed text-xs sm:text-sm">
                   Cukup hubungi pengurus RT/RW setempat untuk meminta Surat Pengantar Kematian guna menerbitkan Formulir F-2.01.
                 </p>
@@ -773,20 +805,20 @@ export default function Home() {
         </main>
 
         {/* =========================================================================
-            SIDEBAR (aside) (col-span-4)
+            SIDEBAR (aside / Landmark: complementary)
         ========================================================================= */}
-        <aside className="col-span-1 lg:col-span-4 space-y-6">
+        <aside aria-label="Informasi pendukung" className="col-span-1 lg:col-span-4 space-y-6">
           {/* Widget 1: Status Tracker */}
           <div id="lacak" className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center justify-start gap-2">
                 <span className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </span>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-base">Lacak Status Permohonan</h3>
+                  <h2 className="font-bold text-slate-900 text-base">Lacak Status Permohonan</h2>
                   <p className="text-xs text-slate-500">Cek proses berkas Anda</p>
                 </div>
               </div>
@@ -797,10 +829,11 @@ export default function Home() {
 
             <form onSubmit={handleTrackSubmit} className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label htmlFor="searchTrackingId" className="block text-xs font-semibold text-slate-700 mb-1">
                   Nomor Registrasi / NIK Pemohon
                 </label>
                 <input
+                  id="searchTrackingId"
                   type="text"
                   required
                   value={searchTrackingId}
@@ -835,12 +868,12 @@ export default function Home() {
           <div className="bg-gradient-to-br from-blue-50 to-slate-100 p-6 rounded-2xl border border-blue-200 shadow-xs space-y-4">
             <div className="flex items-center justify-start gap-3">
               <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-base">Butuh Bantuan Langsung?</h3>
+                <h2 className="font-bold text-slate-900 text-base">Butuh Bantuan Langsung?</h2>
                 <p className="text-xs text-slate-600">Petugas kami siap memandu tanpa antre</p>
               </div>
             </div>
@@ -869,7 +902,7 @@ export default function Home() {
 
           {/* Widget 3: Location Info */}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-            <h3 className="font-bold text-slate-900 text-base">Lokasi &amp; Jam Layanan Fisik</h3>
+            <h2 className="font-bold text-slate-900 text-base">Lokasi &amp; Jam Layanan Fisik</h2>
             <div className="space-y-3 text-xs sm:text-sm text-slate-600">
               <div>
                 <p className="font-semibold text-slate-900">Gedung Disdukcapil Pelayanan Terpadu</p>
@@ -884,7 +917,7 @@ export default function Home() {
         </aside>
 
         {/* =========================================================================
-            FOOTER (col-span-12)
+            FOOTER (col-span-12 / Landmark: contentinfo)
         ========================================================================= */}
         <footer className="col-span-1 lg:col-span-12 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 mt-4 shadow-xs">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-200">
@@ -911,10 +944,10 @@ export default function Home() {
         <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-2xl overflow-hidden">
             <div className="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
-              <h3 className="font-bold text-slate-900 text-base">
+              <h2 className="font-bold text-slate-900 text-base">
                 {isSubmitted ? "Permohonan Berhasil Dikirim" : "Formulir Pengajuan Surat Kematian"}
-              </h3>
-              <button onClick={resetForm} className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg">✕</button>
+              </h2>
+              <button onClick={resetForm} className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg" aria-label="Tutup modal">✕</button>
             </div>
             <div className="p-6">
               {!isSubmitted ? (
@@ -922,30 +955,32 @@ export default function Home() {
                   {formStep === 1 && (
                     <div className="space-y-3">
                       <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap Almarhum *</label>
+                        <label htmlFor="deceasedName" className="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap Almarhum *</label>
                         <input
+                          id="deceasedName"
                           type="text"
                           required
                           value={formData.deceasedName}
                           onChange={(e) => setFormData({ ...formData, deceasedName: e.target.value })}
-                          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm"
+                          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus-visible:outline-2 focus-visible:outline-blue-700"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">NIK Almarhum *</label>
+                        <label htmlFor="deceasedNik" className="block text-xs font-semibold text-slate-700 mb-1">NIK Almarhum *</label>
                         <input
+                          id="deceasedNik"
                           type="text"
                           required
                           maxLength={16}
                           value={formData.deceasedNik}
                           onChange={(e) => setFormData({ ...formData, deceasedNik: e.target.value })}
-                          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm"
+                          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus-visible:outline-2 focus-visible:outline-blue-700"
                         />
                       </div>
                       <button
                         type="button"
                         onClick={() => setFormStep(2)}
-                        className="w-full py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold"
+                        className="w-full py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold cursor-pointer"
                       >
                         Lanjut
                       </button>
@@ -954,28 +989,30 @@ export default function Home() {
                   {formStep === 2 && (
                     <div className="space-y-3">
                       <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">Nama Pelapor *</label>
+                        <label htmlFor="applicantName" className="block text-xs font-semibold text-slate-700 mb-1">Nama Pelapor *</label>
                         <input
+                          id="applicantName"
                           type="text"
                           required
                           value={formData.applicantName}
                           onChange={(e) => setFormData({ ...formData, applicantName: e.target.value })}
-                          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm"
+                          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus-visible:outline-2 focus-visible:outline-blue-700"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-semibold text-slate-700 mb-1">Nomor WhatsApp *</label>
+                        <label htmlFor="applicantPhone" className="block text-xs font-semibold text-slate-700 mb-1">Nomor WhatsApp *</label>
                         <input
+                          id="applicantPhone"
                           type="tel"
                           required
                           value={formData.applicantPhone}
                           onChange={(e) => setFormData({ ...formData, applicantPhone: e.target.value })}
-                          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm"
+                          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus-visible:outline-2 focus-visible:outline-blue-700"
                         />
                       </div>
                       <button
                         type="submit"
-                        className="w-full py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-semibold"
+                        className="w-full py-2.5 bg-emerald-600 text-white rounded-lg text-sm font-semibold cursor-pointer"
                       >
                         Kirim Permohonan
                       </button>
@@ -984,9 +1021,9 @@ export default function Home() {
                 </form>
               ) : (
                 <div className="text-center py-4 space-y-3">
-                  <h4 className="text-xl font-bold text-slate-900">Permohonan Berhasil</h4>
+                  <h3 className="text-xl font-bold text-slate-900">Permohonan Berhasil</h3>
                   <p className="text-sm text-slate-600">Nomor Registrasi: <strong>{registrationCode}</strong></p>
-                  <button onClick={resetForm} className="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold">Tutup</button>
+                  <button onClick={resetForm} className="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold cursor-pointer">Tutup</button>
                 </div>
               )}
             </div>
