@@ -1,0 +1,40 @@
+import type { Item } from "./tipe";
+ 
+export const daftarItem: Item[] = [
+  {
+    id: 1,
+    judul: "Panel surya atap",
+    kategori: "energi",
+    deskripsi: "Pemantauan produksi listrik harian.",
+    tersedia: true,
+  },
+    {
+    id: 2,
+    judul: "Kipas angin hemat energi",
+    kategori: "energi",
+    deskripsi: "Pemantauan produksi listrik harian.",
+    tersedia: true,
+  },
+    {
+    id: 3,
+    judul: "Lampu LED hemat energi",
+    kategori: "energi",
+    deskripsi: "Pemantauan produksi listrik harian.",
+    tersedia: true,
+  },
+    {
+    id: 4,
+    judul: "Panel surya atap",
+    kategori: "energi",
+    deskripsi: "Pemantauan produksi listrik harian.",
+    tersedia: true,
+  },
+
+  {
+    id: 5,
+    judul: "AC Hemat energo",
+    kategori: "energi",
+    deskripsi: "Pemantauan produksi listrik harian.",
+    tersedia: true,
+  }
+];
