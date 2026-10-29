@@ -9,6 +9,7 @@ import {
   findRTRWOfficer,
   addReport,
 } from '@/lib/mockData';
+import { deathReportFormSchema } from '@/lib/schemas/death-report';
 import { DeathReport, RTRWOfficer, AuthMethod } from '@/types';
 
 interface FormErrors {
@@ -23,10 +24,23 @@ interface FormErrors {
   consent?: string;
 }
 
+const formErrorInputIds: Record<keyof FormErrors, string> = {
+  reporterName: 'reporterName-input',
+  reporterNik: 'reporterNik-input',
+  reporterContact: 'contactInput-input',
+  deceasedName: 'deceasedName-input',
+  deceasedNik: 'deceasedNik-input',
+  dateOfDeath: 'dateOfDeath-input',
+  causeOfDeath: 'causeOfDeath-input',
+  address: 'address-input',
+  consent: 'privacy-consent-checkbox',
+};
+
 function ReporterPortalContent() {
   const searchParams = useSearchParams();
   const initialContact = searchParams.get('contact') || '081223344556';
-  const initialAuth = (searchParams.get('auth') as AuthMethod) || 'whatsapp';
+  const initialAuth: AuthMethod =
+    searchParams.get('auth') === 'email' ? 'email' : 'whatsapp';
 
   // Step 1: Authentication & Reporter Identity
   const authMethod = initialAuth;
@@ -131,56 +145,55 @@ function ReporterPortalContent() {
     }, 600);
   };
 
-  // Client-side validation
+  const clearFieldError = (field: keyof FormErrors) => {
+    setErrors((currentErrors) =>
+      currentErrors[field]
+        ? { ...currentErrors, [field]: undefined }
+        : currentErrors
+    );
+  };
+
   const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
+    const result = deathReportFormSchema.safeParse({
+      reporterName,
+      reporterNik,
+      reporterContact: contactInput,
+      authMethod,
+      deceasedName,
+      deceasedNik,
+      dateOfDeath,
+      causeOfDeath,
+      address,
+      consent: consentAgreed,
+    });
 
-    if (!reporterName.trim()) {
-      newErrors.reporterName = 'Nama lengkap pelapor wajib diisi.';
-    }
+    if (!result.success) {
+      const newErrors: FormErrors = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path[0];
+        if (
+          typeof field === 'string' &&
+          Object.prototype.hasOwnProperty.call(formErrorInputIds, field) &&
+          !newErrors[field as keyof FormErrors]
+        ) {
+          newErrors[field as keyof FormErrors] = issue.message;
+        }
+      }
 
-    if (!deceasedName.trim()) {
-      newErrors.deceasedName = 'Nama lengkap almarhum/almarhumah wajib diisi.';
-    }
-
-    if (!deceasedNik.trim()) {
-      newErrors.deceasedNik = 'NIK almarhum wajib diisi.';
-    } else if (!/^\d{16}$/.test(deceasedNik.trim())) {
-      newErrors.deceasedNik = 'NIK almarhum harus tepat 16 digit angka sesuai KTP.';
-    }
-
-    if (reporterNik.trim() && !/^\d{16}$/.test(reporterNik.trim())) {
-      newErrors.reporterNik = 'NIK pelapor harus tepat 16 digit angka.';
-    }
-
-    if (!dateOfDeath) {
-      newErrors.dateOfDeath = 'Tanggal kematian wajib dipilih.';
-    }
-
-    if (!causeOfDeath.trim()) {
-      newErrors.causeOfDeath = 'Penyebab kematian wajib diisi.';
-    }
-
-    if (!address.trim()) {
-      newErrors.address = 'Alamat duka wajib diisi.';
-    }
-
-    if (!consentAgreed) {
-      newErrors.consent =
-        'Anda wajib menyetujui deklarasi persetujuan pemrosesan data kependudukan (UU PDP No. 27/2022) sebelum mengirimkan laporan.';
-    }
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length > 0) {
-      const firstKey = Object.keys(newErrors)[0];
-      const element = document.getElementById(
-        firstKey === 'consent' ? 'privacy-consent-checkbox' : `${firstKey}-input`
-      );
-      element?.focus();
+      setErrors(newErrors);
+      const firstInvalidField = result.error.issues[0]?.path[0];
+      if (
+        typeof firstInvalidField === 'string' &&
+        Object.prototype.hasOwnProperty.call(formErrorInputIds, firstInvalidField)
+      ) {
+        document
+          .getElementById(formErrorInputIds[firstInvalidField as keyof FormErrors])
+          ?.focus();
+      }
       return false;
     }
 
+    setErrors({});
     return true;
   };
 
@@ -363,7 +376,10 @@ function ReporterPortalContent() {
                   type="text"
                   required
                   value={reporterName}
-                  onChange={(e) => setReporterName(e.target.value)}
+                  onChange={(e) => {
+                    setReporterName(e.target.value);
+                    clearFieldError('reporterName');
+                  }}
                   aria-invalid={errors.reporterName ? 'true' : 'false'}
                   aria-describedby={errors.reporterName ? 'reporterName-error' : undefined}
                   className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm text-slate-900 bg-white shadow-2xs focus-visible:outline-2 focus-visible:outline-blue-700"
@@ -390,10 +406,20 @@ function ReporterPortalContent() {
                   inputMode="numeric"
                   maxLength={16}
                   value={reporterNik}
-                  onChange={(e) => setReporterNik(e.target.value.replace(/\D/g, ''))}
+                  onChange={(e) => {
+                    setReporterNik(e.target.value.replace(/\D/g, ''));
+                    clearFieldError('reporterNik');
+                  }}
+                  aria-invalid={errors.reporterNik ? 'true' : 'false'}
+                  aria-describedby={errors.reporterNik ? 'reporterNik-error' : undefined}
                   className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm text-slate-900 bg-white shadow-2xs focus-visible:outline-2 focus-visible:outline-blue-700"
                   placeholder="16 digit angka NIK pelapor"
                 />
+                {errors.reporterNik && (
+                  <p id="reporterNik-error" role="alert" className="mt-1 text-xs font-semibold text-red-700">
+                    {errors.reporterNik}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -409,9 +435,19 @@ function ReporterPortalContent() {
                   type={authMethod === 'whatsapp' ? 'tel' : 'email'}
                   required
                   value={contactInput}
-                  onChange={(e) => setContactInput(e.target.value)}
+                  onChange={(e) => {
+                    setContactInput(e.target.value);
+                    clearFieldError('reporterContact');
+                  }}
+                  aria-invalid={errors.reporterContact ? 'true' : 'false'}
+                  aria-describedby={errors.reporterContact ? 'reporterContact-error' : undefined}
                   className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm text-slate-900 bg-white shadow-2xs focus-visible:outline-2 focus-visible:outline-blue-700"
                 />
+                {errors.reporterContact && (
+                  <p id="reporterContact-error" role="alert" className="mt-1 text-xs font-semibold text-red-700">
+                    {errors.reporterContact}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -468,7 +504,7 @@ function ReporterPortalContent() {
                   value={deceasedName}
                   onChange={(e) => {
                     setDeceasedName(e.target.value);
-                    if (errors.deceasedName) setErrors({ ...errors, deceasedName: undefined });
+                    clearFieldError('deceasedName');
                   }}
                   aria-invalid={errors.deceasedName ? 'true' : 'false'}
                   aria-describedby={errors.deceasedName ? 'deceasedName-error' : undefined}
@@ -501,7 +537,7 @@ function ReporterPortalContent() {
                     onChange={(e) => {
                       const val = e.target.value.replace(/\D/g, '');
                       setDeceasedNik(val);
-                      if (errors.deceasedNik) setErrors({ ...errors, deceasedNik: undefined });
+                      clearFieldError('deceasedNik');
                     }}
                     aria-invalid={errors.deceasedNik ? 'true' : 'false'}
                     aria-describedby={errors.deceasedNik ? 'deceasedNik-error' : 'deceasedNik-hint'}
@@ -573,7 +609,7 @@ function ReporterPortalContent() {
                   value={dateOfDeath}
                   onChange={(e) => {
                     setDateOfDeath(e.target.value);
-                    if (errors.dateOfDeath) setErrors({ ...errors, dateOfDeath: undefined });
+                    clearFieldError('dateOfDeath');
                   }}
                   aria-invalid={errors.dateOfDeath ? 'true' : 'false'}
                   aria-describedby={errors.dateOfDeath ? 'dateOfDeath-error' : undefined}
@@ -636,7 +672,7 @@ function ReporterPortalContent() {
                   value={causeOfDeath}
                   onChange={(e) => {
                     setCauseOfDeath(e.target.value);
-                    if (errors.causeOfDeath) setErrors({ ...errors, causeOfDeath: undefined });
+                    clearFieldError('causeOfDeath');
                   }}
                   aria-invalid={errors.causeOfDeath ? 'true' : 'false'}
                   aria-describedby={errors.causeOfDeath ? 'causeOfDeath-error' : undefined}
@@ -680,10 +716,20 @@ function ReporterPortalContent() {
                   type="text"
                   required
                   value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  onChange={(e) => {
+                    setAddress(e.target.value);
+                    clearFieldError('address');
+                  }}
+                  aria-invalid={errors.address ? 'true' : 'false'}
+                  aria-describedby={errors.address ? 'address-error' : undefined}
                   className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm text-slate-900 bg-white shadow-2xs focus-visible:outline-2 focus-visible:outline-blue-700"
                   placeholder="Nama jalan, nomor rumah, gang, atau kompleks"
                 />
+                {errors.address && (
+                  <p id="address-error" role="alert" className="mt-1 text-xs font-semibold text-red-700">
+                    {errors.address}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -979,7 +1025,7 @@ function ReporterPortalContent() {
                   checked={consentAgreed}
                   onChange={(e) => {
                     setConsentAgreed(e.target.checked);
-                    if (errors.consent) setErrors({ ...errors, consent: undefined });
+                    clearFieldError('consent');
                   }}
                   aria-invalid={errors.consent ? 'true' : 'false'}
                   aria-describedby={errors.consent ? 'consent-error-msg' : undefined}
